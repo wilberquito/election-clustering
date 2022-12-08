@@ -24,4 +24,5 @@ for k, s, c in ss:
     if s >= s_optimal:
         k_optimal, s_optimal, centroids = s, k, c
 
+ku.export(k_optimal, centroids)
 
