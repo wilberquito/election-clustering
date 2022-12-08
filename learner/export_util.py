@@ -36,6 +36,6 @@ def export(n, centroids, out='param.out'):
         f.write(str(n))
         f.write('\n')
         for c in centroids:
-            f.write(np_to_str(c), '\n')
+            f.write(__np_to_str(c), '\n')
         
 
