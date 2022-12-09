@@ -85,7 +85,7 @@ def prediction_strength(k, train_centroids, X_test, test_labels):
         examples_product = n_examples_j * (n_examples_j - 1)
         
         if examples_product == 0:
-            ss.append(math.inf)
+            continue
         else:
             ss.append(s / examples_product) 
 
