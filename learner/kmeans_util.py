@@ -1,4 +1,5 @@
 import math
+import numpy as np
 from scipy.spatial import distance
 
 def closest_centroid(x, centroids):
@@ -60,7 +61,7 @@ def prediction_strength(k, train_centroids, X_test, test_labels):
             # checks not to be the same sample
             if tuple(x1) != tuple(x2):
                 # when 2 samples are part of the same centroid in the matrix of samples they are assigned to 1.
-                if tuple(get_closest_centroid(x1, train_centroids)) == tuple(get_closest_centroid(x2, train_centroids)):
+                if tuple(closest_centroid(x1, train_centroids)) == tuple(closest_centroid(x2, train_centroids)):
                     D[c1, c2] = 1.0
     
     # calculate the prediction strengths for each cluster
