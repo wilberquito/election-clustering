@@ -3,17 +3,16 @@ import pandas as pd
 import sklearn.cluster as sklc 
 import kmeans_util as ku
 import export_util as eu
-from sklearn.model_selection import train_test_split
 
 training_csv = '../data/training.csv'
 
 X = pd.read_csv(training_csv, header=None)
 X = X.dropna(axis=0, how='any')
-X_train, X_test = train_test_split(X, test_size=.15, random_state=73)
 ss = []
 
 for n in range(1, 11):
     try:
+        X_train, X_test = ku.train_test_split(n, X)
         train_model = sklc.KMeans(n_clusters=n, random_state=73, n_init='auto').fit(X_train)
         test_model = sklc.KMeans(n_clusters=n, random_state=73, n_init='auto').fit(X_test)
         train_centroids = train_model.cluster_centers_
