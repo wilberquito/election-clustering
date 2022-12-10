@@ -83,7 +83,7 @@ def prediction_strength(k, train_centroids, X_test, test_labels):
     for x1, c1 in zip(X_test, list(range(n_test))):
         for x2, c2 in zip(X_test, list(range(n_test))):
             # checks not to be the same sample
-            if tuple(x1) != tuple(x2):
+            if c1 != c2:
                 # when 2 samples are part of the same centroid in the matrix of samples they are assigned to 1.
                 if tuple(closest_centroid(x1, train_centroids)) == tuple(closest_centroid(x2, train_centroids)):
                     D[c1, c2] = 1.0
@@ -93,15 +93,12 @@ def prediction_strength(k, train_centroids, X_test, test_labels):
     for j in range(k):
         s = 0
         for x1, l1, c1 in zip(X_test, test_labels, list(range(n_test))):
-            # focuses on labels in the cluster j
-            if l1 != j:
-                continue
             for x2, l2, c2 in zip(X_test, test_labels, list(range(n_test))):
                 # checks if 2 differents samples were marked as part of the
                 # same cluster. If they were, consults the co-membership matrix
                 # to add 1 point if they were part of the same cluster thanks to the
                 # euclidian vector, otherwise the sum do not modify the cluster prediction strengths.
-                if tuple(x1) != tuple(x2) and l1 == l2:
+                if tuple(x1) != tuple(x2) and l1 == l2 and l1 == j:
                     s += D[c1,c2]
                
         examples_j = X_test[test_labels == j, :].tolist()
@@ -109,7 +106,7 @@ def prediction_strength(k, train_centroids, X_test, test_labels):
         examples_product = n_examples_j * (n_examples_j - 1)
         
         if examples_product == 0:
-            continue
+            ss.append(math.inf)
         else:
             ss.append(s / examples_product) 
 

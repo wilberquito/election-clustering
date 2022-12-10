@@ -10,7 +10,7 @@ X = pd.read_csv(training_csv, header=None)
 X = X.dropna(axis=0, how='any')
 ss = []
 
-for n in range(1, 11):
+for n in range(1, 8):
     try:
         X_train, X_test = ku.train_test_split(n, X)
         train_model = sklc.KMeans(n_clusters=n, random_state=73, n_init='auto').fit(X_train)
