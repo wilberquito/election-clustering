@@ -1,6 +1,8 @@
 ---
 title: Unsupervised M.L
-author: Wilber B. Quito
+
+author: Wilber B. Quito, Andrea Ramirez
+
 date: today
 ___
 
