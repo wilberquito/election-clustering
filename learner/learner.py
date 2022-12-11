@@ -1,13 +1,32 @@
+#%%
 import math
 import pandas as pd
-import sklearn.cluster as sklc 
 import kmeans_util as ku
 import export_util as eu
+import matplotlib.pyplot as plt
+from sklearn.cluster import KMeans
 
 training_csv = '../data/training.csv'
 
 X = pd.read_csv(training_csv, header=None)
 X = X.dropna(axis=0, how='any')
+
+#%%
+clusters = range(1, 8)
+wss_list = []
+
+for k in clusters:
+    model = KMeans(n_clusters=k, random_state=73, n_init='auto')
+    model.fit(X)
+    wss_list.append(model.inertia_)
+
+# plotting
+_, ax = plt.subplots()
+ax.plot(clusters, wss_list, '-o', color='black')
+ax.set(title='Elbow plot', 
+       xlabel='number of clusters', 
+       ylabel='WSS');
+#%%
 ss = []
 
 for n in range(1, 8):
