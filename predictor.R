@@ -1,7 +1,6 @@
-
-params.filename <- '../data/param.out'
-testing.filename <- '../data/testing.csv'
-clustering.filename <- '../clustering.out'
+params.filename <- './param.out'
+testing.filename <- './testing.csv'
+clustering.filename <- './clustering.out'
 
 centroids <- read.table(params.filename, header=F, sep=",", dec=".", skip=1)
 n <- read.table(params.filename, header=F, sep=",", dec=".", nrows=1)[1,1]
@@ -16,14 +15,14 @@ closest_centroid <- function (x, centroids) {
   K = nrow(centroids)
   i.min = sapply(1:K, function(i) {
     x <- euclidean(x, centroids[i,])
-    print(x)
     x
   }) |> which.min()
-  print('---')
   i.min
 }
 
 testing.df <- read.csv(testing.filename, header=F, sep=',')
 
-clusterization <- sapply(testing.df, closest_centroid, centroids=centroids)
-clusterization
+ks <- sapply(testing.df, closest_centroid, centroids=centroids)
+ks <- list(ks)
+
+data.table::fwrite(ks, clustering.filename)
