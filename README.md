@@ -3,7 +3,7 @@ title: Unsupervised M.L
 
 author: Wilber B. Quito, Andrea Ramirez
 
-date: today
+date: 11/12/2022
 ___
 
 # Clustering learner with K-means
