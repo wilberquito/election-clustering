@@ -1,9 +1,11 @@
 ---
-title: Unsupervised M.L
-
-author: Wilber B. Quito, Andrea Ramirez
-
-date: 11/12/2022
+> **Title**: Learner and predictor for a clustering task - Unsupervised M.L
+>
+> 💻 Authors: Wilber B. Quito, Andrea Ramirez
+>
+> 🗓️ Date: 11/12/2022
+>
+> ✍🏼 Machine Learning - Master in Data Science - *Universitat de Girona*
 ___
 
 # Clustering learner with K-means
