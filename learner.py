@@ -31,11 +31,12 @@ ss = []
 
 for k in clusters:
     try:
-        X_train, X_test = lc.train_test_split(k, X)
+        X_train, X_valid = lc.train_test_split(k, X)
         train_model = KMeans(n_clusters=k, random_state=73, n_init='auto').fit(X_train)
-        test_model = KMeans(n_clusters=k, random_state=73, n_init='auto').fit(X_test)
+        valid_model = KMeans(n_clusters=k, random_state=73, n_init='auto').fit(X_valid)
+        C_train, C_valid = train_model.predict(X_valid), valid_model.labels_
         train_centroids = train_model.cluster_centers_
-        ps = lc.prediction_strength(k, train_centroids, X_test.to_numpy(), test_model.labels_)
+        ps = lc.classic_prediction_strength(k, C_train, C_valid)
         ss.append((k, ps, train_centroids))
     except Exception as e:
         print('Unexpected error...', e)
@@ -43,10 +44,11 @@ for k in clusters:
 pss = list(map(lambda s : s[1], ss))
 pss
 #%%        
-k_optimal, s_optimal, centroids = -math.inf, -math.inf, []
+k_optimal, s_optimal = -math.inf, -math.inf
+centroids, threshold = [], 0.8
 
 for k, s, c in ss:
-    if s >= s_optimal:
+    if s > threshold:
         k_optimal, s_optimal, centroids = k, s, c
 
 le.export(k_optimal, centroids, './param.out')

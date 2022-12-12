@@ -54,6 +54,56 @@ def closest_centroid(x, centroids):
             
     return min_centroid
 
+def classic_prediction_strength(k, C_train, C_valid):
+    '''
+    Function for calculating the prediction strength 
+    of clustering for a given number of clusters
+    
+    Parameters
+    ----------
+    k : int
+        The number of clusters
+    C_train : array
+        Labels predicted from the trainning model
+    C_valid : array
+        Labels from the validation
+        
+    Returns
+    -------
+    prediction_strength : float
+        Calculated prediction strength
+    '''
+    n_valid = len(C_valid)
+    D = np.zeros(shape=(n_valid, n_valid))
+    
+    for l1, c1 in zip(C_train, list(range(n_valid))):
+        for l2, c2 in zip(C_valid, list(range(n_valid))):
+            if l1 == l2:
+                D[c1,c2] = 1.0
+    
+    # calculate the prediction strengths for each cluster
+    ss = []
+    for j in range(k):
+
+        s = 0
+        n_examples_j = np.count_nonzero(C_train == j)
+
+        if n_examples_j <= 1:
+            ss.append(math.inf) # no points in the cluster
+        else:
+            for l1, c1 in zip(C_train, list(range(n_valid))):
+                for l2, c2 in zip(C_valid, list(range(n_valid))):
+                    # not diagonal & same cluster in both partitions 
+                    # and classifyied in current k cluster
+                    if c1 != c2 and l1 == l2 and l1 == j:
+                        s += D[c1,c2]
+
+            p = n_examples_j * (n_examples_j - 1)
+            ss.append(s / p)
+ 
+    prediction_strength = min(ss)
+
+    return prediction_strength
 
 def prediction_strength(k, train_centroids, X_test, test_labels):
     '''
