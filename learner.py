@@ -1,7 +1,7 @@
 #%%
 import math
 import pandas as pd
-import learner.compute as lc
+import learner.prediction_strength as ps
 import learner.export as le
 import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
@@ -32,12 +32,12 @@ ax.set(title='Elbow plot',
        ylabel='WSS');
 
 #%%
-results = lc.prediction_strength_of_clusters(X, K)
+results = ps.prediction_strength_of_clusters(X, K)
 # %%
 threshold = 0.8
-ps = list(map(lambda x : x[1], results))
+y = list(map(lambda x : x[1], results))
 _, ax = plt.subplots()
-ax.plot(clusters, ps, '-o', color='black')
+ax.plot(clusters, y, '-o', color='black')
 ax.axhline(y=threshold, c='red');
 ax.set(title='Determining the optimal number of clusters', 
        xlabel='number of clusters', 
