@@ -41,11 +41,20 @@ for k in clusters:
     except Exception as e:
         print('Unexpected error...', e)
 #%%
-pss = list(map(lambda s : s[1], ss))
-pss
+strengths = list(map(lambda s : s[1], ss))
+strengths
+# %%
+threshold = 0.85
+_, ax = plt.subplots()
+ax.plot(clusters, strengths, '-o', color='black')
+ax.axhline(y=threshold, c='red');
+ax.set(title='Determining the optimal number of clusters', 
+       xlabel='number of clusters', 
+       ylabel='prediction strength');
 #%%        
-k_optimal, s_optimal = -math.inf, -math.inf
-centroids, threshold = [], 0.8
+k_optimal = -math.inf
+s_optimal = -math.inf
+centroids = []
 
 for k, s, c in ss:
     if s > threshold:
