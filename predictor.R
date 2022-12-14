@@ -20,7 +20,9 @@ closest_centroid <- function (x, centroids) {
   i.min
 }
 
-testing.df <- read.csv(testing.filename, header=F, sep=',')
+df <- read.csv(testing.filename, header=F, sep=',')
+y <- df[ncol(df)]
+df <- df[1:ncol(df) - 1] / y[,1]
 
 ks <- sapply(testing.df, closest_centroid, centroids=centroids)
 ks <- list(ks)
