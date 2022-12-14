@@ -11,6 +11,7 @@ training_csv = './training.csv'
 X = pd.read_csv(training_csv, header=None)
 X = X.dropna(axis=0, how='any')
 
+# TODO: normalizar a partir del numero de personas que botan
 pob = X[X.columns[-1]]
 X = X.drop(X.columns[-1], axis=1)
 X = X.div(pob, axis=0)
