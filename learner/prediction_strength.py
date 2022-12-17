@@ -109,8 +109,8 @@ def classic_prediction_strength(k, C_train, C_valid):
 def prediction_strength_of_clusters(X, K):
 
     X_train, X_valid = sklms.train_test_split(X, test_size=0.25, random_state=73)
-    train_model = KMeans(n_clusters=K, random_state=73, n_init='auto').fit(X_train)
-    valid_model = KMeans(n_clusters=K, random_state=73, n_init='auto').fit(X_valid)
+    train_model = KMeans(n_clusters=K, random_state=73).fit(X_train)
+    valid_model = KMeans(n_clusters=K, random_state=73).fit(X_valid)
     train_centroids = train_model.cluster_centers_
 
     if K == 1:
