@@ -1,4 +1,5 @@
 #%%
+import numpy as np
 import math
 import pandas as pd
 import learner.prediction_strength as ps
@@ -16,8 +17,8 @@ X = X.dropna(axis=0, how='any')
 y = X.iloc[:, len(X.columns) - 1]
 X = X.drop(X.columns[-1], axis=1)
 voters = X.iloc[:,0:len(X.columns)].sum(axis=1)
-X = X.div(voters, axis=0)
-X.insert(loc=len(X.columns), column=int(len(X.columns)), value=voters.div(y, axis=0))
+X = X.div(y, axis=0)
+X.insert(loc=len(X.columns), column=int(len(X.columns)), value=(y-voters) / y)
 X.head()
 
 #%%
@@ -36,10 +37,10 @@ ax.plot(clusters, wss_list, '-o', color='black')
 ax.set(title='Elbow plot', 
        xlabel='number of clusters', 
        ylabel='WSS');
+
 #%%
 results = ps.prediction_strength_of_clusters(X, K)
-# %%
-threshold = 0.8
+threshold = 0.75
 ry = list(map(lambda x : x[1], results))
 _, ax = plt.subplots()
 ax.plot(clusters, ry, '-o', color='black')
@@ -47,6 +48,7 @@ ax.axhline(y=threshold, c='red');
 ax.set(title='Determining the optimal number of clusters', 
        xlabel='number of clusters', 
        ylabel='prediction strength');
+
 #%%        
 k_optimal = -math.inf
 s_optimal = -math.inf
@@ -57,4 +59,26 @@ for k, s, c in results:
         k_optimal, s_optimal, centroids = k, s, c
 
 le.export(k_optimal, centroids, './param.out')
+
+# %%
+# reduce the data in order to see 
+from sklearn.decomposition import PCA
+
+if centroids is None:
+    print("No centroids defined")
+
+PCA_model = PCA(n_components=2).fit(X.to_numpy())
+
+labels = KMeans(n_clusters=k_optimal, random_state=73).fit(X.to_numpy()).labels_
+
+# Function to plot current state of the algorithm.
+# For visualisation purposes, only the first two PC are shown.
+PC = PCA_model.transform(X.to_numpy())
+C2 = PCA_model.transform(centroids)
+
+ax = plt.scatter(PC[:,0], PC[:,1], c=labels, alpha=0.5)
+ax = plt.scatter(C2[:,0], C2[:,1], c='#82cfff', s=100, edgecolors = 'black')
+ax = plt.title("title")
+ax = plt.show()
+ax = plt.clf()
 # %%
