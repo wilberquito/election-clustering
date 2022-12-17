@@ -1,11 +1,12 @@
 #%%
-import numpy as np
 import math
+import numpy as np
 import pandas as pd
 import learner.prediction_strength as ps
 import learner.export as le
 import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
+from sklearn.decomposition import PCA
 
 #%%
 training_csv = './training.csv'
@@ -62,8 +63,6 @@ le.export(k_optimal, centroids, './param.out')
 
 # %%
 # reduce the data in order to see 
-from sklearn.decomposition import PCA
-
 if centroids is None:
     print("No centroids defined")
 
