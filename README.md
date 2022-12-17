@@ -22,13 +22,13 @@ The implementation is made in two different scripts. We have the scripts *learne
 
 ### learner.py
 
-Since we decided to use the K-means algorithm, we import it from the *sklearn.cluster* library, along with learner, math, matplotlib, numpy, pandas, and sklearn.decomposition libraries.
+Since we decided to use the K-means algorithm, we import it from the *sklearn.cluster* library, along with other libraries to transform and explore the data.
 
 The script expects to find a file named *training.csv* which should have the samples to clusterize. 
 ```
 training_csv = './training.csv'
 ```
-Before finding the optimal number of clusters, our script reads the data set as a *data frame*, and it will drop all the rows that contain N/A. 
+Before finding the optimal number of clusters, our script reads the data set as a *data frame*, and then it drops all the rows that contain N/A. 
 
 Taking into consideration that our training data comes from the voters turnout, we decided to transform the total population into all the people that didn't vote, and then to normalize the data to standardize it, and reduce data redundancy and improve protect the model's integrity. 
 
@@ -57,7 +57,6 @@ for k in clusters:
 To have a first look of the clusters in our data set, we perform an Elbow plot:
 
 ```
-
 # plotting
 _, ax = plt.subplots()
 ax.plot(clusters, wss_list, '-o', color='black')
@@ -66,7 +65,9 @@ ax.set(title='Elbow plot',
        ylabel='WSS');
  ```
  
-We had not used any library to compute the Prediction Strength, instead, we implemented from scratch the algorithm using the following equation. The implementation is in the file *compute.py* in the *learner* module. We wanted to use the recomended threshold between 0.8 and 0.9, however with the training data that we were using it could only determine 1 optimal cluster
+![Elbow plot](./img/elbow_plot.png)
+ 
+We had not used any library to compute the Prediction Strength, instead, we implemented from scratch the algorithm using the following equation. The implementation is in the file *compute.py* in the *learner* module. We wanted to use the recomended threshold between 0.8 and 0.9, however with the training data that we were using it could only determine 1 optimal cluster, therefore, we lowered the threshold to 0.75.
 
 ![Prediction Strength](./img/ps-equation.png)
 
@@ -82,6 +83,8 @@ ax.set(title='Determining the optimal number of clusters',
        ylabel='prediction strength');
 ```
 
+![Optimal number of clusters](./img/optimal_number.png)
+
 Once the algorithm has found the optimal number, it exports the number of centroids found in the *training.csv* distribution and it's centroids into a file named *param.out*.  
 
 ```
@@ -96,6 +99,29 @@ for k, s, c in results:
 le.export(k_optimal, centroids, './param.out')
 ```
 
+Still, to verify that our model works, we plot the clusters.
+
+```
+if centroids is None:
+    print("No centroids defined")
+
+PCA_model = PCA(n_components=2).fit(X.to_numpy())
+
+labels = KMeans(n_clusters=k_optimal, random_state=73).fit(X.to_numpy()).labels_
+
+# Function to plot current state of the algorithm.
+# For visualisation purposes, only the first two PC are shown.
+PC = PCA_model.transform(X.to_numpy())
+C2 = PCA_model.transform(centroids)
+
+ax = plt.scatter(PC[:,0], PC[:,1], c=labels, alpha=0.5)
+ax = plt.scatter(C2[:,0], C2[:,1], c='#82cfff', s=100, edgecolors = 'black')
+ax = plt.title("title")
+ax = plt.show()
+ax = plt.clf()
+```
+
+![Cluster using k-means](./img/k-means.png)
 
 ### predictor.R
 
