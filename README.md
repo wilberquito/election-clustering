@@ -1,5 +1,5 @@
 ---
-> **Title**: Learner and predictor for a clustering task - Unsupervised M.L
+> # Learner and predictor for a clustering task - Unsupervised M.L
 >
 > 💻 Authors: Wilber B. Quito, Andrea Ramirez
 >
@@ -10,9 +10,9 @@ ___
 
 # Clustering learner with K-means
 
-The project's goal is to grouping samples linked by the optimal number of clusters using any clustering algorithm.
+The aim of this project is to group samples linked by an optimal number of clusters using a clustering algorithm.
 
-We picked K-means as clustering algorith and we used the Prediction Strength algorithm in order to evaluate the clustering. Prediction Strength algorithm is an option to find the optimal number of centroids, hence the optimal number of clusters. There are other options to find the optimal number of cluster with K-means, for example GAP.
+We decided to use the K-means as clustering algorith because one of its adventages is of scaling to large data sets, and can easily adapt to new examles. Since one disadventage of using this algorithm is that we must know *k*. There are some options to find the optimal number of clusters with K-means, for example GAP. However, to evaluate the number of clusters we've used the Prediction Strength algorithm to find the *optimal number of centroids*, hence the **optimal number of clusters (k)**. 
 
 ![Clustering](./img/portada.png)
 
@@ -22,7 +22,13 @@ The implementation is made in two different scripts. We have the scripts *learne
 
 ### learner.py
 
-The script expects to find a file *training.csv* which should have the samples to clusterize. The implementation tries to find the optimal number of cluster between 1 and 7 included. Once the algorithm had found the optimal number of clustering, it exports the number of centroids found in the *training.csv* distribution and it's centroids into a file named *param.out*.  
+Since we decided to use the K-means algorithm, we import it from the *sklearn.cluster* library, along with pandas, numpy, and math libraries.
+
+The script expects to find a file named *training.csv* which should have the samples to clusterize. 
+```
+training_csv = './training.csv'
+```
+The implementation tries to find the optimal number of cluster between 1 and 7 included. Once the algorithm has found the optimal number, it exports the number of centroids found in the *training.csv* distribution and it's centroids into a file named *param.out*.  
 
 We had not used any library to compute the Prediction Strength, instead, we implemented from scratch the algorithm using the following equation. The implementation is in the file *compute.py* in the *learner* module.
 
