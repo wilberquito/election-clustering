@@ -2,6 +2,7 @@ import math
 import numpy as np
 from scipy.spatial import distance
 import sklearn.model_selection as sklms
+from sklearn.cluster import KMeans
 
 def train_test_split(k, X, test_size=.15, alt_test_size=.45, random_state=73):
     '''
@@ -78,7 +79,7 @@ def classic_prediction_strength(k, C_train, C_valid):
     
     for l1, c1 in zip(C_train, list(range(n_valid))):
         for l2, c2 in zip(C_valid, list(range(n_valid))):
-            if l1 == l2:
+            if c1 != c2 and l1 == l2:
                 D[c1,c2] = 1.0
     
     # calculate the prediction strengths for each cluster
@@ -86,7 +87,7 @@ def classic_prediction_strength(k, C_train, C_valid):
     for j in range(k):
 
         s = 0
-        n_examples_j = np.count_nonzero(C_train == j)
+        n_examples_j = np.count_nonzero(C_valid == j)
 
         if n_examples_j <= 1:
             ss.append(math.inf) # no points in the cluster
@@ -104,6 +105,19 @@ def classic_prediction_strength(k, C_train, C_valid):
     prediction_strength = min(ss)
 
     return prediction_strength
+
+def prediction_strength_of_clusters(X, K):
+
+    X_train, X_valid = sklms.train_test_split(X, test_size=0.25, random_state=73)
+    train_model = KMeans(n_clusters=K, random_state=73, n_init='auto').fit(X_train)
+    valid_model = KMeans(n_clusters=K, random_state=73, n_init='auto').fit(X_valid)
+    train_centroids = train_model.cluster_centers_
+
+    if K == 1:
+        return [(K, 1, train_centroids)]
+    else:
+        ps = prediction_strength(K, train_centroids, X_valid.to_numpy(), valid_model.labels_)
+        return prediction_strength_of_clusters(X, K - 1) + [(K, ps, train_centroids)]
 
 def prediction_strength(k, train_centroids, X_test, test_labels):
     '''
@@ -147,7 +161,7 @@ def prediction_strength(k, train_centroids, X_test, test_labels):
         n_examples_j = len(examples_j)
 
         if n_examples_j <= 1:
-            ss.append(1) # no points in the cluster
+            ss.append(math.inf) # no points in the cluster
         else:
             for x1, l1, c1 in zip(X_test, test_labels, list(range(n_test))):
                 for x2, l2, c2 in zip(X_test, test_labels, list(range(n_test))):
