@@ -30,6 +30,31 @@ The script expects to find a file named *training.csv* which should have the sam
 training_csv = './training.csv'
 ```
 
+<details>
+	<summary><i>training.csv</i></summary>
+	```csv
+	57,11,5,3,9,18,170
+	1685,1275,619,938,1771,453,12125
+	271,14,25,10,18,45,594
+	1940,161,185,104,252,152,5515
+	121,0,4,5,4,18,251
+	298,26,15,16,31,80,826
+	1048,108,84,83,82,159,2498
+	299,50,31,32,66,57,909
+	341,15,15,16,47,43,783
+	794,58,177,22,61,47,2415
+	329,23,23,19,39,21,769
+	139,20,8,6,8,21,356
+	142,35,21,13,29,21,419
+	55,6,1,2,0,21,155
+	592,83,66,59,181,87,2139
+	651,42,92,17,63,70,1608
+	322,16,50,18,37,59,834
+	424,285,136,110,292,58,2335
+	..,..,..,..,..,..,..
+	```
+</details>
+
 Before finding the optimal number of clusters, our script reads the data set as a *data frame*, and then it drops all the rows that contain N/A. 
 
 Taking into consideration that our training data comes from the voters turnout, we decided to transform the total population into all the people that didn't vote, and then to normalize the data to standardize it, and reduce data redundancy and improve protect the model's integrity. 
