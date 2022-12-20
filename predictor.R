@@ -21,10 +21,12 @@ closest_centroid <- function (x, centroids) {
 }
 
 df <- read.csv(testing.filename, header=F, sep=',')
-y <- df[ncol(df)]
-df <- df[1:ncol(df) - 1] / y[,1]
+X <- df
+y <- X[ncol(X)]
+voters <- rowSums(X[,1:ncol(X)-1])
+X[,ncol(X)] <- y - voters
+X <- X / y[,1]
 
-ks <- sapply(testing.df, closest_centroid, centroids=centroids)
-ks <- list(ks)
-
-data.table::fwrite(ks, clustering.filename)
+xs <- apply(X, 1, function(x) closest_centroid(x, centroids))
+xs <- list(xs)
+data.table::fwrite(xs, clustering.filename)
