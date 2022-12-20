@@ -32,7 +32,7 @@ training_csv = './training.csv'
 
 <details>
 	<summary><i>training.csv</i></summary>
-	```csv
+	```
 	57,11,5,3,9,18,170
 	1685,1275,619,938,1771,453,12125
 	271,14,25,10,18,45,594
