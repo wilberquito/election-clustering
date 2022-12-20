@@ -25,9 +25,11 @@ The implementation is made in two different scripts. We have the scripts *learne
 Since we decided to use the K-means algorithm, we import it from the *sklearn.cluster* library, along with other libraries to transform and explore the data.
 
 The script expects to find a file named *training.csv* which should have the samples to clusterize. 
+
 ```
 training_csv = './training.csv'
 ```
+
 Before finding the optimal number of clusters, our script reads the data set as a *data frame*, and then it drops all the rows that contain N/A. 
 
 Taking into consideration that our training data comes from the voters turnout, we decided to transform the total population into all the people that didn't vote, and then to normalize the data to standardize it, and reduce data redundancy and improve protect the model's integrity. 
@@ -66,6 +68,8 @@ ax.set(title='Elbow plot',
  ```
  
 ![Elbow plot](./img/elbow_plot.png)
+
+From the Elbow plot we suspect that the ideal number of clusters for the training sample is 2.
  
 We had not used any library to compute the Prediction Strength, instead, we implemented from scratch the algorithm using the following equation. The implementation is in the file *compute.py* in the *learner* module. We wanted to use the recomended threshold between 0.8 and 0.9, however with the training data that we were using it could only determine 1 optimal cluster, therefore, we lowered the threshold to 0.75.
 
@@ -85,7 +89,7 @@ ax.set(title='Determining the optimal number of clusters',
 
 ![Optimal number of clusters](./img/optimal_number.png)
 
-Once the algorithm has found the optimal number, it exports the number of centroids found in the *training.csv* distribution and it's centroids into a file named *param.out*.  
+Once the algorithm has found the optimal number, it exports the number of centroids found in the *training.csv* distribution and it's centroids into a file named *param.out*. The exported centroids are normalized in the scale 0 to 1. 
 
 ```
 k_optimal = -math.inf
@@ -97,6 +101,14 @@ for k, s, c in results:
         k_optimal, s_optimal, centroids = k, s, c
 
 le.export(k_optimal, centroids, './param.out')
+```
+
+*param.out*
+
+```
+2
+0.47,0.02,0.03,0.02,0.03,0.07,0.36
+0.27,0.06,0.04,0.04,0.08,0.05,0.47
 ```
 
 Still, to verify that our model works, we plot the clusters.
@@ -125,4 +137,55 @@ ax = plt.clf()
 
 ### predictor.R
 
-The script get's the output of *learner.py*, picks the centroids and reads the file *testing.csv* and assign each sample of the testing into a cluster by computing the minimun Euclidean distance between each sample and the centroids. Finally, exports the clusterization into a file named *clustering.out* where each *i* column of this file is the clustering assignation of the *i* sample of *testing.csv*.
+The script get's the output of *learner.py*, picks the normalized centroids and reads the file *testing.csv* which applies normalization and assign each sample of the testing into a cluster by computing the minimun Euclidean distance between each sample and the centroids. Finally, exports the clusterization into a file named *clustering.out* where each *i* row of this file is the clustering assignation of the *i* sample of *testing.csv*.
+
+*testing.out*
+
+```
+28782,17022,26642,13335,19827,7621,217210
+271,14,25,10,18,45,594
+57,11,5,3,9,18,170
+8319,4203,4203,3378,8747,1670,63255
+1685,1275,619,938,1771,453,12125
+7615,11564,4644,7914,11156,2712,86234
+```
+
+*clustering.out*
+
+```
+2
+1
+2
+2
+2
+2
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
