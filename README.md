@@ -31,7 +31,7 @@ training_csv = './training.csv'
 ```
 
 <details>
-	<summary><i>training.csv</i></summary>
+	<summary>Part of the <i>training.csv</i></summary>
 
 	```
 	57,11,5,3,9,18,170
