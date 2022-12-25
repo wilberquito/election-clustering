@@ -97,7 +97,7 @@ ax.set(title='Elbow plot',
  
 ![Elbow plot](./img/elbow_plot.png)
 
-From the Elbow plot we suspect that the ideal number of clusters for the training sample is 2.
+From the Elbow plot we suspect that the ideal number of clusters for the training sample is 2 or 3.
  
 We had not used any library to compute the Prediction Strength, instead, we implemented from scratch the algorithm using the following equation. The implementation is in the file *compute.py* in the *learner* module. We wanted to use the recomended threshold between 0.8 and 0.9, however with the training data that we were using it could only determine 1 optimal cluster, therefore, we lowered the threshold to 0.70.
 
