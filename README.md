@@ -1,4 +1,9 @@
 ---
+output:
+  html_document: default
+  pdf_document: default
+---
+---
 > # Learner and predictor for a clustering task - Unsupervised M.L
 >
 > 💻 Authors: Wilber B. Quito, Andrea Ramirez
@@ -6,6 +11,7 @@
 > 🗓️ Date: 11/12/2022
 >
 > ✍🏼 Machine Learning - Master in Data Science - *Universitat de Girona*
+
 ___
 
 # Clustering learner with K-means
