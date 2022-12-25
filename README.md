@@ -56,6 +56,8 @@ training_csv = './training.csv'
 2441,11005,7111,1584,35514
 ```
 
+</details>
+
 Before finding the optimal number of clusters, our script reads the data set as a *data frame*, and then it drops all the rows that contain N/A. 
 
 Taking into consideration that our training data comes from the voters turnout, we decided to transform the total population into all the people that didn't vote, and then to normalize the data to standardize it, and reduce data redundancy and improve protect the model's integrity. 
