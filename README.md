@@ -1,9 +1,4 @@
 ---
-output:
-  html_document: default
-  pdf_document: default
----
----
 > # Learner and predictor for a clustering task - Unsupervised M.L
 >
 > 💻 Authors: Wilber B. Quito, Andrea Ramirez
