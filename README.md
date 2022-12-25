@@ -33,27 +33,28 @@ training_csv = './training.csv'
 <details>
 	<summary>Part of the <i>training.csv</i></summary>
 
-	```
-	57,11,5,3,9,18,170
-	1685,1275,619,938,1771,453,12125
-	271,14,25,10,18,45,594
-	1940,161,185,104,252,152,5515
-	121,0,4,5,4,18,251
-	298,26,15,16,31,80,826
-	1048,108,84,83,82,159,2498
-	299,50,31,32,66,57,909
-	341,15,15,16,47,43,783
-	794,58,177,22,61,47,2415
-	329,23,23,19,39,21,769
-	139,20,8,6,8,21,356
-	142,35,21,13,29,21,419
-	55,6,1,2,0,21,155
-	592,83,66,59,181,87,2139
-	651,42,92,17,63,70,1608
-	322,16,50,18,37,59,834
-	424,285,136,110,292,58,2335
-	```
-</details>
+```
+20133,33265,26126,11062,135762
+10823,43384,23416,5508,144598
+16662,20697,15018,5846,94977
+11403,19607,16463,6698,78397
+1527,4241,4764,1124,18294
+17829,17880,16174,8980,92602
+2459,7833,5932,1202,27599
+1745,755,676,1036,5696
+31335,23294,22324,11377,119782
+6406,11948,14016,3816,54139
+14622,24403,16031,6791,87705
+21047,28386,18187,9282,110165
+17829,17880,16174,8980,83626
+1981,7543,4008,1159,21065
+1805,4011,3073,1117,14081
+2824,8172,6667,1512,29064
+1981,7543,4008,1159,21747
+10823,43384,23416,5508,119165
+6155,8207,13180,3669,48472
+2441,11005,7111,1584,35514
+```
 
 Before finding the optimal number of clusters, our script reads the data set as a *data frame*, and then it drops all the rows that contain N/A. 
 
@@ -96,13 +97,13 @@ ax.set(title='Elbow plot',
 
 From the Elbow plot we suspect that the ideal number of clusters for the training sample is 2.
  
-We had not used any library to compute the Prediction Strength, instead, we implemented from scratch the algorithm using the following equation. The implementation is in the file *compute.py* in the *learner* module. We wanted to use the recomended threshold between 0.8 and 0.9, however with the training data that we were using it could only determine 1 optimal cluster, therefore, we lowered the threshold to 0.75.
+We had not used any library to compute the Prediction Strength, instead, we implemented from scratch the algorithm using the following equation. The implementation is in the file *compute.py* in the *learner* module. We wanted to use the recomended threshold between 0.8 and 0.9, however with the training data that we were using it could only determine 1 optimal cluster, therefore, we lowered the threshold to 0.70.
 
 ![Prediction Strength](./img/ps-equation.png)
 
 ```
 results = ps.prediction_strength_of_clusters(X, K)
-threshold = 0.75
+threshold = 0.70
 ry = list(map(lambda x : x[1], results))
 _, ax = plt.subplots()
 ax.plot(clusters, ry, '-o', color='black')
@@ -131,9 +132,10 @@ le.export(k_optimal, centroids, './param.out')
 *param.out*
 
 ```
-2
-0.47,0.02,0.03,0.02,0.03,0.07,0.36
-0.27,0.06,0.04,0.04,0.08,0.05,0.47
+3
+0.14,0.24,0.21,0.08,0.33
+0.24,0.16,0.16,0.12,0.32
+0.08,0.32,0.22,0.05,0.32
 ```
 
 Still, to verify that our model works, we plot the clusters.
@@ -162,55 +164,53 @@ ax = plt.clf()
 
 ### predictor.R
 
-The script get's the output of *learner.py*, picks the normalized centroids and reads the file *testing.csv* which applies normalization and assign each sample of the testing into a cluster by computing the minimun Euclidean distance between each sample and the centroids. Finally, exports the clusterization into a file named *clustering.out* where each *i* row of this file is the clustering assignation of the *i* sample of *testing.csv*.
+The script get's the output of *learner.py*, picks the normalized centroids and reads the file *testing.csv* which applies normalization and assign each sample of the testing into a cluster by computing the minimum Euclidean distance between each sample and the centroids. Finally, exports the clusterization into a file named *clustering.out* where each *i* row of this file is the clustering assignation of the *i* sample of *testing.csv*.
 
-*testing.out*
+*testing.csv*
 
 ```
-28782,17022,26642,13335,19827,7621,217210
-271,14,25,10,18,45,594
-57,11,5,3,9,18,170
-8319,4203,4203,3378,8747,1670,63255
-1685,1275,619,938,1771,453,12125
-7615,11564,4644,7914,11156,2712,86234
+21047,28386,18187,9282,118598
+11403,19607,16463,6698,78341
+24335,30318,28390,12302,138566
+1745,755,676,1036,5810
+890,3347,2538,502,11271
+1543,9718,4477,785,22955
+6406,11948,14016,3816,51474
+2459,7833,5932,1202,26121
+10823,43384,23416,5508,118923
+14622,24403,16031,6791,87753
+23632,15432,18256,12063,95067
+3342,16252,7773,1980,47424
+23632,15432,18256,12063,100631
+17829,17880,16174,8980,92372
+1527,4241,4764,1124,18005
+5172,8083,6566,2517,38056
+17785,9106,10677,8275,68889
+18971,39516,21040,8887,131706
+1527,4241,4764,1124,16632
 ```
 
 *clustering.out*
 
 ```
-2
+1
+1
 1
 2
+3
+3
+1
+3
+3
+1
+2
+3
 2
 2
+1
+1
 2
+1
+1
+1
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

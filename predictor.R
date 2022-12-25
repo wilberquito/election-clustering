@@ -30,3 +30,4 @@ X <- X / y[,1]
 xs <- apply(X, 1, function(x) closest_centroid(x, centroids))
 xs <- list(xs)
 data.table::fwrite(xs, clustering.filename)
+

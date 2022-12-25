@@ -28,7 +28,7 @@ clusters = range(1, K + 1)
 wss_list = []
 
 for k in clusters:
-    model = KMeans(n_clusters=k, random_state=73)
+    model = KMeans(n_clusters=k, random_state=73, n_init=20)
     model.fit(X)
     wss_list.append(model.inertia_)
 
@@ -41,7 +41,7 @@ ax.set(title='Elbow plot',
 
 #%%
 results = ps.prediction_strength_of_clusters(X, K)
-threshold = 0.75
+threshold = 0.70
 ry = list(map(lambda x : x[1], results))
 _, ax = plt.subplots()
 ax.plot(clusters, ry, '-o', color='black')
@@ -68,7 +68,7 @@ if centroids is None:
 
 PCA_model = PCA(n_components=2).fit(X.to_numpy())
 
-labels = KMeans(n_clusters=k_optimal, random_state=73).fit(X.to_numpy()).labels_
+labels = KMeans(n_clusters=k_optimal, random_state=73, n_init=20).fit(X.to_numpy()).labels_
 
 # Function to plot current state of the algorithm.
 # For visualisation purposes, only the first two PC are shown.
@@ -77,7 +77,7 @@ C2 = PCA_model.transform(centroids)
 
 ax = plt.scatter(PC[:,0], PC[:,1], c=labels, alpha=0.5)
 ax = plt.scatter(C2[:,0], C2[:,1], c='#82cfff', s=100, edgecolors = 'black')
-ax = plt.title("title")
+ax = plt.title("Clustering representation")
 ax = plt.show()
 ax = plt.clf()
 # %%
