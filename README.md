@@ -11,7 +11,7 @@ ___
 
 # Clustering learner with K-means
 
-The aim of this project is to group samples linked by an optimal number of clusters using a clustering algorithm.
+The aim of this project is to group samples linked by an optimal number of clusters using a clustering algorithm ⚙️.
 
 We decided to use the K-means as clustering algorith because one of its adventages is of scaling to large data sets, and it can easily adapt to new examples. Since one disadventage of using this algorithm is that we must know *k*. There are some options to find the optimal number of clusters with K-means, for example GAP. However, to evaluate the number of clusters we've used the Prediction Strength algorithm to find the *optimal number of centroids*, hence the **optimal number of clusters (k)**. 
 
@@ -19,13 +19,13 @@ We decided to use the K-means as clustering algorith because one of its adventag
 
 ## Implementation
 
-The implementation is made in two different scripts. We have the scripts *learner.py* and *preditor.R*.
+The implementation is made in two different scripts. We have the scripts *learner.py* and *preditor.R* ✍🏼.
 
 ### learner.py
 
-Since we decided to use the K-means algorithm, we import it from the *sklearn.cluster* library, along with other libraries to transform and explore the data.
+Since we decided to use the K-means algorithm ⚙️, we import it from the *sklearn.cluster* library, along with other libraries to transform and explore the data.
 
-The script expects to find a file named *training.csv* which should have the samples to clusterize. 
+The script expects to find a file named *training.csv* 💽 which should have the samples to clusterize. 
 
 ```
 training_csv = './training.csv'
@@ -59,9 +59,9 @@ training_csv = './training.csv'
 
 </details>
 
-Before finding the optimal number of clusters, our script reads the data set as a *data frame*, and then it drops all the rows that contain N/A. 
+Before finding the optimal number of clusters, our script reads the data set as a *data frame* 🗂️; and drops all the rows that contain N/A. 
 
-Taking into consideration that our training data comes from the voters turnout, we decided to transform the total population into all the people that didn't vote, and then to normalize the data to standardize it, and reduce data redundancy and improve protect the model's integrity. 
+Taking into consideration that our training data comes from the **voters' turnout** 📮, we decided to transform the total population into all the people who didn't vote. Then normalize the data to standardize it, to reduce data redundancy, and improve and protect the model's integrity. 
 
 ```
 y = X.iloc[:, len(X.columns) - 1]
@@ -72,7 +72,7 @@ X.insert(loc=len(X.columns), column=int(len(X.columns)), value=(y-voters) / y)
 X.head()
 ```
 
-The implementation tries to find the optimal number of clusters between 1 and 7 included. 
+The implementation tries to find the *optimal number of clusters* ⚙️ between 1 and 7 included. 
 
 ```
 K = 7
@@ -85,7 +85,7 @@ for k in clusters:
     wss_list.append(model.inertia_)
 ```
 
-To have a first look of the clusters in our data set, we perform an Elbow plot:
+To have a first look of the *clusters* in our data set, we perform an **Elbow plot** 📊:
 
 ```
 # plotting
@@ -98,9 +98,9 @@ ax.set(title='Elbow plot',
  
 ![Elbow plot](./img/elbow_plot.png)
 
-From the Elbow plot we suspect that the ideal number of clusters for the training sample is 2 or 3.
+From the Elbow plot, we suspect that the ideal number of clusters for the training sample is 2 or 3. 
  
-We had not used any library to compute the Prediction Strength, instead, we implemented from scratch the algorithm using the following equation. The implementation is in the file *compute.py* in the *learner* module. We wanted to use the recomended threshold between 0.8 and 0.9, however with the training data that we were using it could only determine 1 optimal cluster, therefore, we lowered the threshold to 0.70.
+We had not used any library to compute the Prediction Strength. Instead, we implemented the algorithm from scratch ⚙️ by using the following equation. The implementation is in the file *compute.py* in the *learner* module. We wanted to use the recommended threshold between 0.8 and 0.9. However, with the training data that we were using, it could only determine *1 optimal cluster*; therefore, we lowered the threshold to 0.70.
 
 ![Prediction Strength](./img/ps-equation.png)
 
@@ -118,7 +118,7 @@ ax.set(title='Determining the optimal number of clusters',
 
 ![Optimal number of clusters](./img/optimal_number.png)
 
-Once the algorithm has found the optimal number, it exports the number of centroids found in the *training.csv* distribution and it's centroids into a file named *param.out*. The exported centroids are normalized in the scale 0 to 1. 
+Once the algorithm has found the **optimal number** ⚙️, it exports the number of centroids found in the *training.csv* distribution and its centroids into a file named *param.out* 💾. The exported centroids are normalized on a scale from 0 to 1.
 
 ```
 k_optimal = -math.inf
@@ -132,7 +132,7 @@ for k, s, c in results:
 le.export(k_optimal, centroids, './param.out')
 ```
 
-*param.out*
+💾 *param.out*
 
 ```
 3
@@ -141,7 +141,7 @@ le.export(k_optimal, centroids, './param.out')
 0.08,0.32,0.22,0.05,0.32
 ```
 
-Still, to verify that our model works, we plot the clusters.
+Still, to verify that our model works, we plot the clusters. 📊
 
 ```
 if centroids is None:
@@ -167,9 +167,9 @@ ax = plt.clf()
 
 ### predictor.R
 
-The script get's the output of *learner.py*, picks the normalized centroids and reads the file *testing.csv* which applies normalization and assign each sample of the testing into a cluster by computing the minimum Euclidean distance between each sample and the centroids. Finally, exports the clusterization into a file named *clustering.out* where each *i* row of this file is the clustering assignation of the *i* sample of *testing.csv*.
+The script gets the output of *learner.py*, picks the normalized centroids, and reads the file *testing.csv* which applies normalization and assigns each sample of the testing into a cluster by computing the minimum Euclidean distance between each sample and the centroids. Finally, it exports the clusterization into a file named *clustering.out* 💾 where each *i* row of this file is the clustering assignation of the *i* sample of *testing.csv*.
 
-*testing.csv*
+💽 *testing.csv* 
 
 ```
 21047,28386,18187,9282,118598
@@ -193,7 +193,7 @@ The script get's the output of *learner.py*, picks the normalized centroids and 
 1527,4241,4764,1124,16632
 ```
 
-*clustering.out*
+💾 *clustering.out*
 
 ```
 1
