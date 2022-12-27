@@ -187,18 +187,18 @@ closest_centroid <- function (x, centroids) {
   }) |> which.min()
   i.min
 }
-```
 
-Finally, it exports the clusterization into a file named *clustering.out* 💾 where each *i* row of this file is the clustering assignation of the *i* sample of *testing.csv*.
-
-```
 df <- read.csv(testing.filename, header=F, sep=',')
 X <- df
 y <- X[ncol(X)]
 voters <- rowSums(X[,1:ncol(X)-1])
 X[,ncol(X)] <- y - voters
 X <- X / y[,1]
+```
 
+Finally, it exports the clusterization into a file named *clustering.out* 💾 where each *i* row of this file is the clustering assignation of the *i* sample of *testing.csv*.
+
+```
 xs <- apply(X, 1, function(x) closest_centroid(x, centroids))
 xs <- list(xs)
 data.table::fwrite(xs, clustering.filename)
